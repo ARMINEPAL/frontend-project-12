@@ -7,7 +7,7 @@ install:
 start-frontend:
 	make -C frontend start
 
-start-backend:
+start:
 	npx start-server -s ./frontend/dist
 
 deploy:
