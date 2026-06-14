@@ -1,7 +1,7 @@
 build:
-	cd frontend && npm install && npm run build
-	rm -rf build
-	cp -r frontend/dist build
+	cd frontend
+	npm install
+	npm run build
 
 start:
-	npx start-server -s ./build
+	npx start-server -s ./frontend/dist
