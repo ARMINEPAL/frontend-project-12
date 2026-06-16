@@ -1,52 +1,87 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import axios from 'axios'
+import { useState } from 'react'
+import { useFormik } from 'formik'
+import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { useLocation, useNavigate } from 'react-router-dom'
+import useAuth from '../hooks/index.jsx'
+import routes from '../routes.js'
+import React from 'react'
 
-const LoginPage = ()=> {
-return (
-<>
-<h1>Login</h1>
-<Formik
-  initialValues={{ email: "", password: "" }}
-  onSubmit={() => {}}
->
-  {({touched, errors}) => (
-    <Form>
-      <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <Field
-          id='email'
-          type="email"
-          name="email"
-          className={`form-control ${
-    touched.email && errors.email ? "is-invalid" : ""
-  }`}
-        />
-        <ErrorMessage
-           component="div"
-           name="email"
-           className="invalid-feedback"
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <Field
-          id='password'
-          type="password"
-          name="password"
-          className={`form-control ${
-    touched.password && errors.password ? "is-invalid" : ""
-  }`}
-        />
-        <ErrorMessage
-           component="div"
-           name="password"
-           className="invalid-feedback"
-        />
-      </div>
-      <button type="submit">Войти</button>
-    </Form>
-  )}
-</Formik>
-</>
-)}
+const LoginPage = () => {
+  const auth = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [authFailed, setAuthFailed] = useState(false)
+
+
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    onSubmit: async (values) => {
+      setAuthFailed(false)
+
+      try {
+        const response = await axios.post(routes.loginPath(), values)
+        localStorage.setItem('userId', JSON.stringify(response.data))
+        auth.logIn()
+
+        const from = location.state?.from?.pathname || '/'
+navigate(from)
+      } catch (error) {
+        setAuthFailed(true)
+        formik.setSubmitting(false)
+      }
+    },
+  })
+
+  return (
+    <Row className="justify-content-center align-content-center h-100">
+      <Col xs={12} md={8} xxl={6}>
+        <Card className="shadow-sm">
+          <Card.Body>
+            <Form onSubmit={formik.handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="username">Username</Form.Label>
+                <Form.Control
+                  id="username"
+                  name="username"
+                  autoComplete="username"
+                  required
+                  value={formik.values.username}
+                  onChange={formik.handleChange}
+                  isInvalid={authFailed}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-4">
+                <Form.Label htmlFor="password">Password</Form.Label>
+                <Form.Control
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  isInvalid={authFailed}
+                />
+                <Form.Control.Feedback type="invalid">
+                  the username or password is incorrect
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Button type="submit" variant="outline-primary" className="w-100">
+                Submit
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+  )
+}
 
 export default LoginPage
