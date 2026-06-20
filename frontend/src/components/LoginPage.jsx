@@ -2,12 +2,14 @@ import axios from 'axios'
 import { useState } from 'react'
 import { useFormik } from 'formik'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import useAuth from '../hooks/index.jsx'
 import routes from '../routes.js'
 import React from 'react'
-
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 const LoginPage = () => {
+  const { t} = useTranslation()
   const auth = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
@@ -31,7 +33,12 @@ const LoginPage = () => {
         const from = location.state?.from?.pathname || '/'
 navigate(from)
       } catch (error) {
-        setAuthFailed(true)
+        if (error.response?.status === 401) {
+          setAuthFailed(true)
+        } else {
+          toast.error(t('errors.network'))
+        }
+      
         formik.setSubmitting(false)
       }
     },
@@ -44,7 +51,7 @@ navigate(from)
           <Card.Body>
             <Form onSubmit={formik.handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="username">Username</Form.Label>
+                <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
                 <Form.Control
                   id="username"
                   name="username"
@@ -57,7 +64,7 @@ navigate(from)
               </Form.Group>
 
               <Form.Group className="mb-4">
-                <Form.Label htmlFor="password">Password</Form.Label>
+                <Form.Label htmlFor="password">{t('fields.password')}</Form.Label>
                 <Form.Control
                   id="password"
                   name="password"
@@ -69,13 +76,17 @@ navigate(from)
                   isInvalid={authFailed}
                 />
                 <Form.Control.Feedback type="invalid">
-                  the username or password is incorrect
-                </Form.Control.Feedback>
+                    {t('errors.incorrectFields')}
+                  </Form.Control.Feedback>
               </Form.Group>
 
               <Button type="submit" variant="outline-primary" className="w-100">
-                Submit
+              {t('buttons.login')}
               </Button>
+              <div className='mt-3 text-center'>
+                <span>{t('loginPage.noAccount')} </span>
+                <Link to="/signup">{t('buttons.registration')}</Link>
+              </div>
             </Form>
           </Card.Body>
         </Card>

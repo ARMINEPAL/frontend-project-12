@@ -9,9 +9,12 @@ import {
 
 import LoginPage from './LoginPage.jsx';
 import ChatPage from './ChatPage.jsx';
+import SignupPage from './SignupPage.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
 import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
+import Header from './Header.jsx';
+import { ToastContainer } from 'react-toastify'
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(
@@ -41,9 +44,11 @@ const PrivateRoute = ({ children }) => {
     : <Navigate to="/login" state={{ from: location }} />;
 };
 
-const App = () => (
+const App = () => {
+    return (
   <AuthProvider>
     <Router>
+    <Header/>
       <Routes>
         <Route
           path="/"
@@ -54,10 +59,12 @@ const App = () => (
           )}
         />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path = '*' element = { <NotFoundPage/>}/>
       </Routes>
+      <ToastContainer />
     </Router>
   </AuthProvider>
-);
+)}
 
 export default App;
