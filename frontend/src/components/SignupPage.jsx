@@ -5,20 +5,19 @@ import routes from '../routes.js'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/index.jsx'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 const SignupPage = () => {
-    const { t, i18n } = useTranslation()
-    const [signupFailed, setSignupFailed] = useState(false)
+    const { t } = useTranslation()
 
     const navigate = useNavigate()
     const auth = useAuth()
 
     const validationSchema = yup.object({
         username: yup.string().min(3, 'errors.minMax').max(20, 'errors.minMax').required('errors.required'),
-        password: yup.string().min(6, 'errors.minMax').required('errors.minMax').required('errors.required'),
-        confirmPassword: yup.string().required('errors.minMax').required('errors.required').oneOf(
+        password: yup.string().min(6, 'errors.passwordLength').required('errors.required'),
+        confirmPassword: yup.string().required('errors.required').oneOf(
             [yup.ref('password')],
             'errors.passwordsMustMatch',
           ),
@@ -45,11 +44,12 @@ const SignupPage = () => {
             }
             catch (e) {
                 if (e.response?.status === 409) {
-                    setSignupFailed(true)
+                  formik.setFieldError('username', 'errors.userExists')
                   }
                 else {
                   toast.error(t('errors.network'))
                 }
+                formik.setSubmitting(false)
             }
           },
     })
@@ -69,10 +69,10 @@ const SignupPage = () => {
                       value={formik.values.username}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      isInvalid={(formik.touched.username && formik.errors.username) || signupFailed}
+                      isInvalid={(formik.touched.username && formik.errors.username)}
                     />
                     <Form.Control.Feedback type="invalid">
-                    {formik.errors.username ? t(formik.errors.username) : t('errors.userExists')}
+                    {formik.errors.username && t(formik.errors.username)}
                   </Form.Control.Feedback>
                   </Form.Group>
     
@@ -111,7 +111,7 @@ const SignupPage = () => {
                     && t(formik.errors.confirmPassword)}
                     </Form.Control.Feedback>
                   </Form.Group>
-                  <Button type="submit" variant="outline-primary" className="w-100">
+                  <Button type="submit" variant="outline-primary" className="w-100" disabled={formik.isSubmitting}>
                   {t('buttons.registration')}
                   </Button>
                 </Form>

@@ -10,6 +10,7 @@ import AddChannel from './modals/AddChannel.jsx'
 import { Dropdown, ButtonGroup } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import filter from 'leo-profanity'
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'))
@@ -77,7 +78,7 @@ const ChatPage = () => {
         await axios.post(
           routes.messagesPath(),
           {
-            body: text,
+            body: filter.clean(text),
             channelId: currentChannelId,
             username: user.username,
           },

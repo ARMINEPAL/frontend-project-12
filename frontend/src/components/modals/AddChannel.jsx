@@ -9,6 +9,8 @@ import routes from '../../routes.js'
 import { addChannel } from '../../store/slices/chatSlice.js'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import filter  from 'leo-profanity'
+
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'))
@@ -38,7 +40,7 @@ const AddChannel = ({ channels, onHide }) => {
       .notOneOf(channels.map((channel) => channel.name), 'errors.unique')
       .required('errors.required'),
   })
-
+  
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -48,7 +50,7 @@ const AddChannel = ({ channels, onHide }) => {
       try {
         const response = await axios.post(
           routes.channelsPath(),
-          { name },
+          { name: filter.clean(name) },
           { headers: getAuthHeader() },
         )
   

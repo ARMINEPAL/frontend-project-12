@@ -8,6 +8,7 @@ import routes from '../../routes.js'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import filter from 'leo-profanity'
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'))
@@ -53,7 +54,7 @@ const RenameChannel = ({ channel, channels, onHide }) => {
       try {
         const response = await axios.patch(
         routes.channelPath(channel.id),
-        { name },
+        { name: filter.clean(name) },
         { headers: getAuthHeader() },
         )
         dispatch(renameChannel(response.data))
