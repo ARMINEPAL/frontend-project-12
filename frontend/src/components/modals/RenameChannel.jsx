@@ -1,34 +1,34 @@
-import axios from 'axios'
-import { useEffect, useRef} from 'react'
-import { useFormik } from 'formik'
-import * as yup from 'yup'
-import { Modal, FormGroup, FormControl } from 'react-bootstrap'
-import { renameChannel } from '../../store/slices/chatSlice.js'
-import routes from '../../routes.js'
-import { useDispatch } from 'react-redux'
-import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
-import filter from 'leo-profanity'
+import axios from 'axios';
+import { useFormik } from 'formik';
+import filter from 'leo-profanity';
+import { useEffect, useRef } from 'react';
+import { FormControl, FormGroup, Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import * as yup from 'yup';
+import routes from '../../routes.js';
+import { renameChannel } from '../../store/slices/chatSlice.js';
 
 const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'))
+  const userId = JSON.parse(localStorage.getItem('userId'));
 
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` }
+  if (userId?.token) {
+    return { Authorization: `Bearer ${userId.token}` };
   }
 
-  return {}
-}
+  return {};
+};
 
 const RenameChannel = ({ channel, channels, onHide }) => {
-  const { t} = useTranslation()
-  const inputRef = useRef(null)
-  const dispatch = useDispatch()
+  const { t } = useTranslation();
+  const inputRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    inputRef.current?.focus()
-    inputRef.current?.select()
-  }, [])
+    inputRef.current?.focus();
+    inputRef.current?.select();
+  }, []);
 
   const validationSchema = yup.object({
     name: yup
@@ -40,10 +40,10 @@ const RenameChannel = ({ channel, channels, onHide }) => {
         channels
           .filter((item) => item.id !== channel.id)
           .map((item) => item.name),
-          'errors.unique'
+        'errors.unique',
       )
       .required('errors.required'),
-  })
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -53,20 +53,19 @@ const RenameChannel = ({ channel, channels, onHide }) => {
     onSubmit: async ({ name }) => {
       try {
         const response = await axios.patch(
-        routes.channelPath(channel.id),
-        { name: filter.clean(name) },
-        { headers: getAuthHeader() },
-        )
-        dispatch(renameChannel(response.data))
-        toast.success(t('notifications.rename'))
-        onHide()
+          routes.channelPath(channel.id),
+          { name: filter.clean(name) },
+          { headers: getAuthHeader() },
+        );
+        dispatch(renameChannel(response.data));
+        toast.success(t('notifications.rename'));
+        onHide();
+      } catch {
+        toast.error(t('errors.network'));
+        formik.setSubmitting(false);
       }
-      catch(e) {
-        toast.error(t('errors.network'))
-        formik.setSubmitting(false)
-      }
-}
-  })
+    },
+  });
 
   return (
     <Modal show onHide={onHide}>
@@ -80,7 +79,7 @@ const RenameChannel = ({ channel, channels, onHide }) => {
             <FormControl
               ref={inputRef}
               name="name"
-              className='mb-2'
+              className="mb-2"
               data-testid="input-body"
               required
               value={formik.values.name}
@@ -88,20 +87,26 @@ const RenameChannel = ({ channel, channels, onHide }) => {
               onBlur={formik.handleBlur}
               isInvalid={formik.touched.name && formik.errors.name}
             />
-            <label className="visually-hidden" htmlFor="name">{t('chatPage.modal.add.header')}</label>
+            <label className="visually-hidden" htmlFor="name">
+              {t('chatPage.modal.add.header')}
+            </label>
             <FormControl.Feedback type="invalid">
-            {formik.errors.name && t(formik.errors.name)}
+              {formik.errors.name && t(formik.errors.name)}
             </FormControl.Feedback>
           </FormGroup>
 
           <div className="d-flex justify-content-end">
-          <button type="button" className="me-2 btn btn-secondary">Отменить</button>
-          <button type="submit" className="btn btn-primary">{t('buttons.submit')}</button>
+            <button type="button" className="me-2 btn btn-secondary">
+              Отменить
+            </button>
+            <button type="submit" className="btn btn-primary">
+              {t('buttons.submit')}
+            </button>
           </div>
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default RenameChannel
+export default RenameChannel;

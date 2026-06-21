@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import {
+  Navigate,
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate,
   useLocation,
 } from 'react-router-dom';
-
-import LoginPage from './LoginPage.jsx';
-import ChatPage from './ChatPage.jsx';
-import SignupPage from './SignupPage.jsx'
-import NotFoundPage from './NotFoundPage.jsx'
+import { ToastContainer } from 'react-toastify';
 import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
+import ChatPage from './ChatPage.jsx';
 import Header from './Header.jsx';
-import { ToastContainer } from 'react-toastify'
+import LoginPage from './LoginPage.jsx';
+import NotFoundPage from './NotFoundPage.jsx';
+import SignupPage from './SignupPage.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(
@@ -39,36 +38,39 @@ const PrivateRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
 
-  return auth.loggedIn
-    ? children
-    : <Navigate to="/login" state={{ from: location }} />;
+  return auth.loggedIn ? (
+    children
+  ) : (
+    <Navigate to="/login" state={{ from: location }} />
+  );
 };
 
 const App = () => {
-    return (
-  <AuthProvider>
-    <Router>
-    <div className="d-flex flex-column h-100">
-    <Header/>
-    <div className="container h-100 my-4 overflow-hidden rounded shadow">
-    <Routes>
-        <Route
-          path="/"
-          element={(
-            <PrivateRoute>
-              <ChatPage />
-            </PrivateRoute>
-          )}
-        />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path = '*' element = { <NotFoundPage/>}/>
-      </Routes>
-    </div>
-    </div>
-    <ToastContainer />
-    </Router>
-  </AuthProvider>
-)}
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="d-flex flex-column h-100">
+          <Header />
+          <div className="container h-100 my-4 overflow-hidden rounded shadow">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <ChatPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </div>
+        </div>
+        <ToastContainer />
+      </Router>
+    </AuthProvider>
+  );
+};
 
 export default App;
