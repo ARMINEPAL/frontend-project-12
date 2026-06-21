@@ -48,8 +48,10 @@ const App = () => {
     return (
   <AuthProvider>
     <Router>
+    <div className="d-flex flex-column h-100">
     <Header/>
-      <Routes>
+    <div className="container h-100 my-4 overflow-hidden rounded shadow">
+    <Routes>
         <Route
           path="/"
           element={(
@@ -62,7 +64,9 @@ const App = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path = '*' element = { <NotFoundPage/>}/>
       </Routes>
-      <ToastContainer />
+    </div>
+    </div>
+    <ToastContainer />
     </Router>
   </AuthProvider>
 )}

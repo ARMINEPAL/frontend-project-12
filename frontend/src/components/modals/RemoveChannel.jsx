@@ -35,19 +35,15 @@ const RemoveChannel = ({ channel, onHide }) => {
   return (
     <Modal show onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('chatPage.modal.remove.header')}</Modal.Title>
+        <Modal.Title>{t('chatPage.channel.remove')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <form onSubmit={handleSubmit}>
-          <FormGroup>
-            <input
-              className="btn btn-danger"
-              type="submit"
-              value={t('buttons.submit')}
-            />
-          </FormGroup>
-        </form>
+      <p class="lead">Уверены?</p>
+          <div className="d-flex justify-content-end">
+          <button type="button" className="me-2 btn btn-secondary">Отменить</button>
+          <button type="button" className="btn btn-danger" onClick = {handleSubmit}>{t('buttons.remove')}</button></div>
+    
       </Modal.Body>
     </Modal>
   )

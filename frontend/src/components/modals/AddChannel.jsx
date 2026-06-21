@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { Modal, FormGroup, FormControl } from 'react-bootstrap'
+import { Modal, FormGroup, FormControl, FormLabel } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 
 import routes from '../../routes.js'
@@ -68,7 +68,7 @@ const AddChannel = ({ channels, onHide }) => {
   return (
     <Modal show onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('chatPage.modal.add.header')}</Modal.Title>
+        <Modal.Title>{t('chatPage.channel.add')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -79,23 +79,23 @@ const AddChannel = ({ channels, onHide }) => {
   name="name"
   data-testid="input-body"
   required
+  className='mb-2'
   value={formik.values.name}
   onChange={formik.handleChange}
   onBlur={formik.handleBlur}
   isInvalid={formik.touched.name && formik.errors.name}
 />
+<FormLabel className="visually-hidden">{t('chatPage.modal.add.header')}</FormLabel>
 <FormControl.Feedback type="invalid">
   {formik.errors.name && t(formik.errors.name)}
 </FormControl.Feedback>
 
           </FormGroup>
 
-          <input
-            className="btn btn-primary"
-            type="submit"
-            value={t('buttons.submit')}
-            disabled={formik.isSubmitting}
-          />
+          <div className="d-flex justify-content-end">
+          <button type="button" className="me-2 btn btn-secondary">Отменить</button>
+          <button type="submit" className="btn btn-primary">{t('buttons.send')}</button>
+          </div>
         </form>
       </Modal.Body>
     </Modal>

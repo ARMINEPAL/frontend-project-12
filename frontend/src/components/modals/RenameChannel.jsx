@@ -71,7 +71,7 @@ const RenameChannel = ({ channel, channels, onHide }) => {
   return (
     <Modal show onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('chatPage.modal.rename.header')}</Modal.Title>
+        <Modal.Title>{t('chatPage.channel.rename')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -80,6 +80,7 @@ const RenameChannel = ({ channel, channels, onHide }) => {
             <FormControl
               ref={inputRef}
               name="name"
+              className='mb-2'
               data-testid="input-body"
               required
               value={formik.values.name}
@@ -87,12 +88,16 @@ const RenameChannel = ({ channel, channels, onHide }) => {
               onBlur={formik.handleBlur}
               isInvalid={formik.touched.name && formik.errors.name}
             />
+            <label className="visually-hidden" htmlFor="name">{t('chatPage.modal.add.header')}</label>
             <FormControl.Feedback type="invalid">
             {formik.errors.name && t(formik.errors.name)}
             </FormControl.Feedback>
           </FormGroup>
 
-          <input className="btn btn-primary" type="submit" value={t('buttons.submit')} disabled={formik.isSubmitting} />
+          <div className="d-flex justify-content-end">
+          <button type="button" className="me-2 btn btn-secondary">Отменить</button>
+          <button type="submit" className="btn btn-primary">{t('buttons.submit')}</button>
+          </div>
         </form>
       </Modal.Body>
     </Modal>

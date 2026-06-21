@@ -58,61 +58,69 @@ const SignupPage = () => {
         <Row className="justify-content-center align-content-center h-100">
           <Col xs={12} md={8} xxl={6}>
             <Card className="shadow-sm">
-              <Card.Body>
-                <Form onSubmit={formik.handleSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
+              <Card.Body className='d-flex flex-column flex-md-row justify-content-around align-items-center p-5'>
+              <div>
+              <img src="/assets/avatar_1.jpg" className="rounded-circle" alt="Регистрация"/>
+              </div>
+                <Form className = 'w-50' onSubmit={formik.handleSubmit}>
+                <h1 className="text-center mb-4">{t('buttons.registration')}</h1>
+                  <Form.Group className="form-floating mb-3">
                     <Form.Control
                       id="username"
                       name="username"
+                      placeholder={t('errors.mimmax')}
                       autoComplete="username"
                       value={formik.values.username}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       isInvalid={(formik.touched.username && formik.errors.username)}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
+                    <Form.Control.Feedback placement="right" className='invalid-tooltip' type="invalid">
                     {formik.errors.username && t(formik.errors.username)}
                   </Form.Control.Feedback>
                   </Form.Group>
     
-                  <Form.Group className="mb-4">
-                    <Form.Label htmlFor="password">{t('fields.password')}</Form.Label>
+                  <Form.Group className="form-floating mb-3">
                     <Form.Control
                       id="password"
                       name="password"
                       type="password"
-                      autoComplete="current-password"
+                      placeholder={t('errors.passwordLength')}
+                      autoComplete="new-password"
+                      aria-describedby="passwordHelpBlock"
                       value={formik.values.password}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       isInvalid={formik.touched.password && formik.errors.password}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Label htmlFor="password">{t('fields.password')}</Form.Label>
+                    <Form.Control.Feedback className='invalid-tooltip' type="invalid">
                     {formik.errors.password
                     && t(formik.errors.password)}
                     </Form.Control.Feedback>
                   </Form.Group>
 
-                  <Form.Group className="mb-4">
-                    <Form.Label htmlFor="confirmPassword">{t('fields.confirmPassword')}</Form.Label>
+                  <Form.Group className="form-floating mb-4">
                     <Form.Control
                       id="confirmPassword"
                       name="confirmPassword"
+                      placeholder={t('errors.passwordsMustMatch')}
                       type="password"
-                      autoComplete="current-password"
+                      autoComplete="new-password"
                       value={formik.values.confirmPassword}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       isInvalid={formik.touched.confirmPassword && formik.errors.confirmPassword}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Label htmlFor="confirmPassword">{t('fields.confirmPassword')}</Form.Label>
+                    <Form.Control.Feedback className='invalid-tooltip' type="invalid">
                     {formik.errors.confirmPassword
                     && t(formik.errors.confirmPassword)}
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Button type="submit" variant="outline-primary" className="w-100" disabled={formik.isSubmitting}>
-                  {t('buttons.registration')}
+                  {t('buttons.signup')}
                   </Button>
                 </Form>
               </Card.Body>
