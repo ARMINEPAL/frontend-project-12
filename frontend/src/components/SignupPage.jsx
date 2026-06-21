@@ -60,7 +60,7 @@ const SignupPage = () => {
             <Card className="shadow-sm">
               <Card.Body className='d-flex flex-column flex-md-row justify-content-around align-items-center p-5'>
               <div>
-              <img src="/assets/avatar_1.jpg" className="rounded-circle" alt="Регистрация"/>
+              <img src="../assets/avatar_1.jpg" className="rounded-circle" alt="Регистрация"/>
               </div>
                 <Form className = 'w-50' onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('buttons.registration')}</h1>
