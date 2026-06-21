@@ -8,6 +8,8 @@ import routes from '../routes.js'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import avatar from '../assets/avatar.jpg'
+
 const LoginPage = () => {
   const { t} = useTranslation()
   const auth = useAuth()
@@ -50,7 +52,7 @@ navigate(from)
         <Card className="shadow-sm">
           <Card.Body className='d-flex flex-column flex-md-row justify-content-around align-items-center p-5'>
           <div className='class="col-12 col-md-6 d-flex align-items-center justify-content-center'>
-          <img src="../assets/avatar.jpg" className="rounded-circle" alt="Войти"/>
+          <img src={avatar} className="rounded-circle" alt="Войти"/>
           </div>
             <Form className= 'col-12 col-md-6 mt-3 mt-md-0' onSubmit={formik.handleSubmit}>
             <h1 className="text-center mb-4">{t('buttons.login')}</h1>

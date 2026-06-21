@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/index.jsx'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import avatar from '../assets/avatar_1.jpg'
 
 const SignupPage = () => {
     const { t } = useTranslation()
@@ -60,7 +61,7 @@ const SignupPage = () => {
             <Card className="shadow-sm">
               <Card.Body className='d-flex flex-column flex-md-row justify-content-around align-items-center p-5'>
               <div>
-              <img src="../assets/avatar_1.jpg" className="rounded-circle" alt="Регистрация"/>
+              <img src={avatar} className="rounded-circle" alt="Регистрация"/>
               </div>
                 <Form className = 'w-50' onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('buttons.registration')}</h1>
