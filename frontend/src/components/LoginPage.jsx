@@ -44,10 +44,10 @@ const LoginPage = () => {
   });
 
   return (
-    <Row className="justify-content-center align-content-center h-1000">
+    <Row className="justify-content-center align-content-center h-100">
       <Col xs={12} md={8} xxl={6}>
         <Card className="shadow-sm">
-          <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+          <Card.Body className="row p-5">
             <div className='class="col-12 col-md-6 d-flex align-items-center justify-content-center'>
               <img src={avatar} className="rounded-circle" alt="Войти" />
             </div>
