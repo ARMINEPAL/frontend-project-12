@@ -76,6 +76,9 @@ const RenameChannel = ({ channel, channels, onHide }) => {
       <Modal.Body>
         <form onSubmit={formik.handleSubmit}>
           <FormGroup>
+          <FormLabel className="visually-hidden" htmlFor="name">
+              {t('chatPage.modal.add.header')}
+            </FormLabel>
             <FormControl
               ref={inputRef}
               name="name"
@@ -87,9 +90,6 @@ const RenameChannel = ({ channel, channels, onHide }) => {
               onBlur={formik.handleBlur}
               isInvalid={formik.touched.name && formik.errors.name}
             />
-            <FormLabel className="visually-hidden" htmlFor="name">
-              {t('chatPage.modal.add.header')}
-            </FormLabel>
             <FormControl.Feedback type="invalid">
               {formik.errors.name && t(formik.errors.name)}
             </FormControl.Feedback>
