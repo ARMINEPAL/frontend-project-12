@@ -90,7 +90,7 @@ const ChatPage = () => {
       }
 
       const user = JSON.parse(localStorage.getItem('userId'));
-      const response = await axios.post(
+      await axios.post(
         routes.messagesPath(),
         {
           body: filter.clean(text),
@@ -101,7 +101,6 @@ const ChatPage = () => {
           headers: getAuthHeader(),
         },
       );
-      dispatch(addMessage(response.data))
       setText('');
     } catch {
       toast.error(t('errors.network'));
