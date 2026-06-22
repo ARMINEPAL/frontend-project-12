@@ -82,9 +82,8 @@ const RenameChannel = ({ channel, channels, onHide }) => {
             <FormControl
               ref={inputRef}
               name="name"
+              id='name'
               className="mb-2"
-              data-testid="input-body"
-              required
               value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
