@@ -20,8 +20,8 @@ const init = async () => {
     resources,
     fallbackLng: 'ru',
   });
-  filter.loadDictionary('ru');
-  filter.add(['дурак']);
+  filter.loadDictionary();
+  filter.add(filter.getDictionary('ru'))
   return (
     <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
