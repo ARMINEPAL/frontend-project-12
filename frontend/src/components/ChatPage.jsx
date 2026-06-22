@@ -170,7 +170,7 @@ const ChatPage = () => {
                       className="flex-grow-0"
                     >
                       <span className="visually-hidden">
-                        {t('chatPage.labels.manageToChannel')}
+                        {t('chatPage.labels.manageOfChannel')}
                       </span>
                     </Dropdown.Toggle>
 
