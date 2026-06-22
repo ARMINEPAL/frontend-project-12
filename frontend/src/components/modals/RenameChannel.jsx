@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import filter from 'leo-profanity';
 import { useEffect, useRef } from 'react';
-import { FormControl, FormGroup, Modal } from 'react-bootstrap';
+import { FormControl, FormGroup, FormLabel, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -87,9 +87,9 @@ const RenameChannel = ({ channel, channels, onHide }) => {
               onBlur={formik.handleBlur}
               isInvalid={formik.touched.name && formik.errors.name}
             />
-            <label className="visually-hidden" htmlFor="name">
+            <FormLabel className="visually-hidden" htmlFor="name">
               {t('chatPage.modal.add.header')}
-            </label>
+            </FormLabel>
             <FormControl.Feedback type="invalid">
               {formik.errors.name && t(formik.errors.name)}
             </FormControl.Feedback>
