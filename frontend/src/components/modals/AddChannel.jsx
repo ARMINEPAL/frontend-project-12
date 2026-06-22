@@ -74,7 +74,7 @@ const AddChannel = ({ channels, onHide }) => {
       <Modal.Body>
         <form onSubmit={formik.handleSubmit}>
           <FormGroup>
-          <FormLabel className="visually-hidden">
+          <FormLabel htmlFor="name" className="visually-hidden">
               {t('chatPage.modal.add.header')}
             </FormLabel>
             <FormControl
