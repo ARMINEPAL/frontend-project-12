@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import routes from '../../routes.js';
 import { addChannel } from '../../store/slices/chatSlice.js';
+import filter from 'leo-profanity';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
