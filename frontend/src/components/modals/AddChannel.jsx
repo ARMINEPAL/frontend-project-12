@@ -82,6 +82,7 @@ const AddChannel = ({ channels, onHide }) => {
               name="name"
               data-testid="input-body"
               required
+              area-label = {t('chatPage.modal.add.header')}
               className="mb-2"
               value={formik.values.name}
               onChange={formik.handleChange}

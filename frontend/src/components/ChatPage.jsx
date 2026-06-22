@@ -90,7 +90,7 @@ const ChatPage = () => {
       }
 
       const user = JSON.parse(localStorage.getItem('userId'));
-      await axios.post(
+      const response = await axios.post(
         routes.messagesPath(),
         {
           body: filter.clean(text),
