@@ -57,7 +57,7 @@ const ChatPage = () => {
       }
     };
     fetchData();
-    const socket = io('http://localhost:5002');
+    const socket = io();
     socket.on('newMessage', (message) => {
       dispatch(addMessage(message));
     });
@@ -101,7 +101,7 @@ const ChatPage = () => {
           headers: getAuthHeader(),
         },
       );
-
+      dispatch(addMessage(response.data))
       setText('');
     } catch {
       toast.error(t('errors.network'));
@@ -223,7 +223,7 @@ const ChatPage = () => {
             </div>
             <div
               id="messages-box"
-              className="fchat-messages overflow-auto px-5 "
+              className="chat-messages overflow-auto px-5 "
             >
               {messages
                 .filter((message) => message.channelId === currentChannelId)
@@ -260,11 +260,11 @@ const ChatPage = () => {
                       aria-label={t('buttons.add')}
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"
                       ></path>
                     </svg>
-                    <span class="visually-hidden">{t('buttons.send')}</span>
+                    <span className="visually-hidden">{t('buttons.send')}</span>
                   </button>
                 </div>
               </form>
