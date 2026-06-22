@@ -80,18 +80,13 @@ const AddChannel = ({ channels, onHide }) => {
             <FormControl
               ref={inputRef}
               name="name"
-              data-testid="input-body"
-              required
-              area-label = {t('chatPage.modal.add.header')}
+              id= "name"
               className="mb-2"
               value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               isInvalid={formik.touched.name && formik.errors.name}
             />
-            <FormLabel className="visually-hidden">
-              {t('chatPage.modal.add.header')}
-            </FormLabel>
             <FormControl.Feedback type="invalid">
               {formik.errors.name && t(formik.errors.name)}
             </FormControl.Feedback>
