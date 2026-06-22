@@ -57,7 +57,7 @@ export default {
     },
     notifications: {
       add: 'Канал создан',
-      delete: 'Канал удален',
+      delete: 'Канал удалён',
       rename: 'Канал переименован',
     },
   },
