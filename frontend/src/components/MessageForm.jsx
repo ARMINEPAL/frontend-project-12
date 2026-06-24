@@ -39,7 +39,7 @@ const MessageForm = ({ currentChannelId }) => {
           <input
             className="border-0 p-0 ps-2 form-control"
             name="body"
-            aria-label={t('chatPage.labels.forMessages')} 
+            aria-label="Новое сообщение"
             placeholder={t('chatPage.labels.forMessages')}
             value={text}
             onChange={(e) => setText(e.target.value)}
