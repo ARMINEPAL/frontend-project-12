@@ -16,31 +16,34 @@ const LoginPage = () => {
   const location = useLocation();
   const [authFailed, setAuthFailed] = useState(false);
 
+
+  const handleSubmit = async (values) => {
+    setAuthFailed(false);
+
+    try {
+      const response = await axios.post(routes.loginPath(), values);
+      localStorage.setItem('userId', JSON.stringify(response.data));
+      auth.logIn();
+
+      const from = location.state?.from?.pathname || '/';
+      navigate(from);
+    } catch (error) {
+      if (error.response?.status === 401) {
+        setAuthFailed(true);
+      } else {
+        toast.error(t('errors.network'));
+      }
+
+      formik.setSubmitting(false);
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: async (values) => {
-      setAuthFailed(false);
-
-      try {
-        const response = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(response.data));
-        auth.logIn();
-
-        const from = location.state?.from?.pathname || '/';
-        navigate(from);
-      } catch (error) {
-        if (error.response?.status === 401) {
-          setAuthFailed(true);
-        } else {
-          toast.error(t('errors.network'));
-        }
-
-        formik.setSubmitting(false);
-      }
-    },
+    onSubmit: handleSubmit,
   });
 
   return (
@@ -48,7 +51,7 @@ const LoginPage = () => {
       <Col xs={12} md={8} xxl={6}>
         <Card className="shadow-sm">
           <Card.Body className="row p-5">
-            <div className='class="col-12 col-md-6 d-flex align-items-center justify-content-center'>
+            <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
               <img src={avatar} className="rounded-circle" alt="Войти" />
             </div>
             <Form

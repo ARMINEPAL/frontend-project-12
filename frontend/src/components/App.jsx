@@ -1,19 +1,17 @@
 import { useState } from 'react';
 import {
-  Navigate,
   Route,
   BrowserRouter as Router,
   Routes,
-  useLocation,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import AuthContext from '../contexts/index.jsx';
-import useAuth from '../hooks/index.jsx';
 import ChatPage from './ChatPage.jsx';
 import Header from './Header.jsx';
 import LoginPage from './LoginPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import SignupPage from './SignupPage.jsx';
+import PrivateRoute from './PrivateRoute.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(
@@ -34,16 +32,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-const PrivateRoute = ({ children }) => {
-  const auth = useAuth();
-  const location = useLocation();
-
-  return auth.loggedIn ? (
-    children
-  ) : (
-    <Navigate to="/login" state={{ from: location }} />
-  );
-};
 
 const App = () => {
   return (

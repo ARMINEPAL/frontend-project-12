@@ -4,10 +4,10 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import * as yup from 'yup';
 import avatar from '../assets/avatar_1.jpg';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
+import { validationSchema } from '../validationSchemas/signupSchema.js';
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -15,21 +15,25 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const validationSchema = yup.object({
-    username: yup
-      .string()
-      .min(3, 'errors.minMax')
-      .max(20, 'errors.minMax')
-      .required('errors.required'),
-    password: yup
-      .string()
-      .min(6, 'errors.passwordLength')
-      .required('errors.required'),
-    confirmPassword: yup
-      .string()
-      .required('errors.required')
-      .oneOf([yup.ref('password')], 'errors.passwordsMustMatch'),
-  });
+  const handleSubmit = async (values) => {
+    try {
+      const response = await axios.post(routes.signupPath(), {
+        username: values.username,
+        password: values.password,
+      });
+      localStorage.setItem('userId', JSON.stringify(response.data));
+      auth.logIn();
+      navigate('/');
+    } catch (e) {
+      if (e.response?.status === 409) {
+        formik.setFieldError('username', 'errors.userExists');
+      } else {
+        toast.error(t('errors.network'));
+      }
+      formik.setSubmitting(false);
+    }
+  }
+  
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -37,24 +41,7 @@ const SignupPage = () => {
       confirmPassword: '',
     },
     validationSchema,
-    onSubmit: async (values) => {
-      try {
-        const response = await axios.post(routes.signupPath(), {
-          username: values.username,
-          password: values.password,
-        });
-        localStorage.setItem('userId', JSON.stringify(response.data));
-        auth.logIn();
-        navigate('/');
-      } catch (e) {
-        if (e.response?.status === 409) {
-          formik.setFieldError('username', 'errors.userExists');
-        } else {
-          toast.error(t('errors.network'));
-        }
-        formik.setSubmitting(false);
-      }
-    },
+    onSubmit: handleSubmit
   });
 
   return (

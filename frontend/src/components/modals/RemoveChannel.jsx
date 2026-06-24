@@ -1,27 +1,17 @@
-import axios from 'axios';
+
 import { Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import routes from '../../routes.js';
+import api from '../../api/api.js';
 
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId?.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
 
 const RemoveChannel = ({ channel, onHide }) => {
   const { t } = useTranslation();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.delete(routes.channelPath(channel.id), {
-        headers: getAuthHeader(),
-      });
+      await api.delete(routes.channelPath(channel.id));
       toast.success(t('notifications.delete'));
       onHide();
     } catch {

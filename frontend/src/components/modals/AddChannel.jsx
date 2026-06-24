@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
 import filter from 'leo-profanity';
 import { useEffect, useRef } from 'react';
@@ -6,19 +5,10 @@ import { FormControl, FormGroup, FormLabel, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import * as yup from 'yup';
 import routes from '../../routes.js';
 import { addChannel } from '../../store/slices/chatSlice.js';
+import { getAddChannelSchema } from '../../validationSchemas/channelSchema.js';
 
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId?.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
 
 const AddChannel = ({ channels, onHide }) => {
   const { t } = useTranslation();
@@ -29,40 +19,29 @@ const AddChannel = ({ channels, onHide }) => {
     inputRef.current?.focus();
   }, []);
 
-  const validationSchema = yup.object({
-    name: yup
-      .string()
-      .trim()
-      .min(3, 'errors.minMax')
-      .max(20, 'errors.minMax')
-      .notOneOf(
-        channels.map((channel) => channel.name),
-        'errors.unique',
-      )
-      .required('errors.required'),
-  });
+  const handleSubmit =  async ({ name }) => {
+    try {
+      const response = await api.post(
+        routes.channelsPath(),
+        { name: filter.clean(name) }
+      );
+
+      dispatch(addChannel(response.data));
+      toast.success(t('notifications.add'));
+      onHide();
+    } catch {
+      toast.error(t('errors.network'));
+      formik.setSubmitting(false);
+    }
+  }
+
 
   const formik = useFormik({
     initialValues: {
       name: '',
     },
-    validationSchema,
-    onSubmit: async ({ name }) => {
-      try {
-        const response = await axios.post(
-          routes.channelsPath(),
-          { name: filter.clean(name) },
-          { headers: getAuthHeader() },
-        );
-
-        dispatch(addChannel(response.data));
-        toast.success(t('notifications.add'));
-        onHide();
-      } catch {
-        toast.error(t('errors.network'));
-        formik.setSubmitting(false);
-      }
-    },
+    validationSchema: getAddChannelSchema(channels),
+    onSubmit: handleSubmit,
   });
 
   return (
