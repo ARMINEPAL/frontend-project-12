@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import routes from '../../routes.js';
 import { addChannel } from '../../store/slices/chatSlice.js';
 import { getAddChannelSchema } from '../../validationSchemas/channelSchema.js';
-
+import api from '../../api/api.js';
 
 const AddChannel = ({ channels, onHide }) => {
   const { t } = useTranslation();

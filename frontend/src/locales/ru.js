@@ -26,6 +26,7 @@ export default {
     chatPage: {
       labels: {
         forMessages: 'Введите сообщение',
+        newMessage: 'Новое сообщение',
         manageOfChannel: 'Управление каналом',
       },
       modal: {
