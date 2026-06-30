@@ -63,7 +63,6 @@ const LoginPage = () => {
                 <Form.Control
                   id="username"
                   name="username"
-                  autoComplete="username"
                   required
                   placeholder={t('fields.name')}
                   value={formik.values.username}
@@ -79,7 +78,6 @@ const LoginPage = () => {
                   name="password"
                   type="password"
                   placeholder="Пароль"
-                  autoComplete="current-password"
                   required
                   value={formik.values.password}
                   onChange={formik.handleChange}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import filter from 'leo-profanity';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -7,8 +7,15 @@ import routes from '../routes.js';
 import api from '../api/api.js';
 
 const MessageForm = ({ currentChannelId }) => {
+  const inputRef = useRef(null);
   const { t } = useTranslation();
   const [text, setText] = useState('');
+
+  useEffect(() => {
+    setText('')
+    inputRef.current?.focus();
+  }, [currentChannelId]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +34,7 @@ const MessageForm = ({ currentChannelId }) => {
       });
 
       setText('');
+      inputRef.current?.focus();
     } catch {
       toast.error(t('errors.network'));
     }
@@ -37,6 +45,7 @@ const MessageForm = ({ currentChannelId }) => {
       <form className="py-1 border rounded-2" onSubmit={handleSubmit}>
         <div className="input-group has-validation">
           <input
+            ref={inputRef}
             className="border-0 p-0 ps-2 form-control"
             name="body"
             aria-label={t('chatPage.labels.newMessage')}

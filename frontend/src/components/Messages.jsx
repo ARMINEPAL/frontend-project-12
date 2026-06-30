@@ -1,11 +1,17 @@
 import { useTranslation } from 'react-i18next';
+import { useEffect, useRef } from 'react';
 
 const Messages = ({ messages, currentChannelId, currentChannel }) => {
   const { t } = useTranslation();
+  const messagesEndRef = useRef(null);
 
   const currentMessages = messages.filter(
     (message) => message.channelId === currentChannelId,
   );
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView();
+  }, [currentMessages, currentChannelId]);
 
   return (
     <>
@@ -26,6 +32,7 @@ const Messages = ({ messages, currentChannelId, currentChannel }) => {
             {message.body}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
     </>
   );

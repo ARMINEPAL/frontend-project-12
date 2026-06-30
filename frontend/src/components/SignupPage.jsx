@@ -33,7 +33,7 @@ const SignupPage = () => {
       formik.setSubmitting(false);
     }
   }
-  
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -59,7 +59,6 @@ const SignupPage = () => {
                   id="username"
                   name="username"
                   placeholder={t('errors.mimmax')}
-                  autoComplete="username"
                   value={formik.values.username}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -83,7 +82,6 @@ const SignupPage = () => {
                   name="password"
                   type="password"
                   placeholder={t('errors.passwordLength')}
-                  autoComplete="new-password"
                   aria-describedby="passwordHelpBlock"
                   value={formik.values.password}
                   onChange={formik.handleChange}
@@ -107,7 +105,6 @@ const SignupPage = () => {
                   name="confirmPassword"
                   placeholder={t('errors.passwordsMustMatch')}
                   type="password"
-                  autoComplete="new-password"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
